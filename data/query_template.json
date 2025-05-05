@@ -1,0 +1,44 @@
+{
+  "queries": [
+    {
+      "id": "q1",
+      "text": "What is computational storage and how does it work?"
+    },
+    {
+      "id": "q2",
+      "text": "What are the benefits of using computational storage devices?"
+    },
+    {
+      "id": "q3",
+      "text": "How can computational storage improve RAG performance?"
+    },
+    {
+      "id": "q4",
+      "text": "What challenges exist in implementing RAG on computational storage?"
+    },
+    {
+      "id": "q5",
+      "text": "Compare the performance of traditional RAG with CSD-based RAG"
+    },
+    {
+      "id": "q6",
+      "text": "How are vector similarity searches implemented in computational storage?"
+    },
+    {
+      "id": "q7",
+      "text": "What hardware architectures are suitable for computational storage?"
+    },
+    {
+      "id": "q8",
+      "text": "Explain the data movement bottleneck and how CSDs address it"
+    },
+    {
+      "id": "q9",
+      "text": "What embedding models work best for computational storage applications?"
+    },
+    {
+      "id": "q10",
+      "text": "How can we optimize vector operations for computational storage devices?"
+    }
+  ]
+}

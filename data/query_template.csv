@@ -1,0 +1,11 @@
+id,text
+q1,What is computational storage and how does it work?
+q2,What are the benefits of using computational storage devices?
+q3,How can computational storage improve RAG performance?
+q4,What challenges exist in implementing RAG on computational storage?
+q5,Compare the performance of traditional RAG with CSD-based RAG
+q6,How are vector similarity searches implemented in computational storage?
+q7,What hardware architectures are suitable for computational storage?
+q8,Explain the data movement bottleneck and how CSDs address it
+q9,What embedding models work best for computational storage applications?
+q10,How can we optimize vector operations for computational storage devices?

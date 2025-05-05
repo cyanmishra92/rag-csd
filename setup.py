@@ -12,11 +12,11 @@ setup(
     name="rag-csd",
     version="0.1.0",
     author="Your Name",
-    author_email="your.email@example.com",
+    author_email="cyanmishra92@gmail.com",
     description="Retrieval-Augmented Generation with Computational Storage Devices",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/rag-csd",
+    url="https://github.com/cyanmishra92/rag-csd",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

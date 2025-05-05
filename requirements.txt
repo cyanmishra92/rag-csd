@@ -19,6 +19,11 @@ torch>=1.10.0
 nltk>=3.6.5
 scikit-learn>=1.0.0
 
+# PDF processing
+PyPDF2>=3.0.0
+python-docx>=0.8.11
+openpyxl>=3.0.10
+
 # Logging and monitoring
 tensorboard>=2.8.0
 wandb>=0.12.0

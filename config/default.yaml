@@ -16,26 +16,63 @@ data:
   remove_stopwords: false
   lowercase: true
   normalize_unicode: true
+  
+  # PDF specific settings
+  pdf:
+    extract_images: false
+    extract_tables: false
+    ocr_enabled: false
+    min_line_length: 20
 
 # Embedding settings
 embedding:
   model: "sentence-transformers/all-MiniLM-L6-v2"  # Small model suitable for CSD
   dimension: 384
-  batch_size: 32
+  batch_size: 32  # Can be overridden via command line
   normalize: true
   pooling_strategy: "mean"  # mean, max, cls
   use_amp: false  # Automatic mixed precision
   quantization: null  # null, int8, fp16
+  
+  # Model options by size
+  models:
+    tiny:
+      name: "sentence-transformers/paraphrase-MiniLM-L3-v2"
+      dimension: 384
+    small:
+      name: "sentence-transformers/all-MiniLM-L6-v2"
+      dimension: 384
+    medium:
+      name: "sentence-transformers/multi-qa-mpnet-base-dot-v1"
+      dimension: 768
+    large:
+      name: "sentence-transformers/all-mpnet-base-v2"
+      dimension: 768
 
 # Retrieval settings
 retrieval:
   vector_db_type: "faiss"  # faiss, milvus, pinecone
   vector_db_path: "data/vectors"
   similarity_metric: "cosine"  # cosine, dot, euclidean
-  top_k: 5
+  top_k: 5  # Can be overridden via command line
   reranking: false
   min_similarity_score: 0.7
   use_metadata_filtering: false
+  
+  # Predefined retrieval configurations
+  presets:
+    minimal:
+      top_k: 3
+      min_similarity_score: 0.8
+    standard:
+      top_k: 5
+      min_similarity_score: 0.7
+    comprehensive:
+      top_k: 10
+      min_similarity_score: 0.6
+    exhaustive:
+      top_k: 20
+      min_similarity_score: 0.5
   
 # Augmentation settings
 augmentation:
@@ -58,6 +95,21 @@ csd:
   offload_embedding: true
   offload_search: true
   
+  # CSD simulation presets
+  presets:
+    slow:
+      latency: 20
+      bandwidth: 500
+      parallel_operations: 2
+    standard:
+      latency: 5
+      bandwidth: 2000
+      parallel_operations: 8
+    fast:
+      latency: 1
+      bandwidth: 5000
+      parallel_operations: 16
+    
 # Performance settings
 performance:
   use_threads: true
