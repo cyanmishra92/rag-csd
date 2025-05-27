@@ -1,0 +1,134 @@
+api:
+  cors_origins:
+  - '*'
+  debug: false
+  enabled: false
+  host: 0.0.0.0
+  port: 8000
+  timeout: 30
+  workers: 4
+augmentation:
+  deduplicate: true
+  include_metadata: true
+  max_tokens_per_chunk: 256
+  separator: '
+
+
+    '
+  strategy: concatenate
+  template: 'Query: {query}
+
+
+    Context: {context}'
+csd:
+  bandwidth: 2000
+  device_path: /dev/csd0
+  enabled: true
+  latency: 5
+  memory: 4
+  offload_embedding: true
+  offload_search: true
+  parallel_operations: 8
+  presets:
+    fast:
+      bandwidth: 5000
+      latency: 1
+      parallel_operations: 16
+    slow:
+      bandwidth: 500
+      latency: 20
+      parallel_operations: 2
+    standard:
+      bandwidth: 2000
+      latency: 5
+      parallel_operations: 8
+  simulator: true
+data:
+  chunk_overlap: 128
+  chunk_size: 512
+  lowercase: true
+  max_chunks_per_doc: 10
+  max_token_length: 50
+  min_chunk_size: 128
+  min_token_length: 2
+  normalize_unicode: true
+  pdf:
+    extract_images: false
+    extract_tables: false
+    min_line_length: 20
+    ocr_enabled: false
+  remove_stopwords: false
+embedding:
+  batch_size: 32
+  cache:
+    enabled: true
+    max_size: 1000
+    ttl: 3600
+  dimension: 384
+  model: sentence-transformers/all-MiniLM-L6-v2
+  models:
+    large:
+      dimension: 768
+      name: sentence-transformers/all-mpnet-base-v2
+    medium:
+      dimension: 768
+      name: sentence-transformers/multi-qa-mpnet-base-dot-v1
+    small:
+      dimension: 384
+      name: sentence-transformers/all-MiniLM-L6-v2
+    tiny:
+      dimension: 384
+      name: sentence-transformers/paraphrase-MiniLM-L3-v2
+  normalize: true
+  pooling_strategy: mean
+  quantization: null
+  use_amp: false
+evaluation:
+  ground_truth_path: data/ground_truth.json
+  k_values:
+  - 1
+  - 3
+  - 5
+  - 10
+  metrics:
+  - precision@k
+  - recall@k
+  - ndcg@k
+  - latency
+  - throughput
+  test_queries_path: data/test_queries.json
+general:
+  cache_dir: .cache
+  device: auto
+  log_level: INFO
+  random_seed: 42
+performance:
+  num_threads: 8
+  prefetch_size: 2
+  profiling: false
+  use_threads: true
+retrieval:
+  hnsw_M: 16
+  hnsw_efConstruction: 200
+  hnsw_efSearch: 64
+  index_type: auto
+  min_similarity_score: 0.7
+  presets:
+    comprehensive:
+      min_similarity_score: 0.6
+      top_k: 10
+    exhaustive:
+      min_similarity_score: 0.5
+      top_k: 20
+    minimal:
+      min_similarity_score: 0.8
+      top_k: 3
+    standard:
+      min_similarity_score: 0.7
+      top_k: 5
+  reranking: false
+  similarity_metric: cosine
+  top_k: 5
+  use_metadata_filtering: false
+  vector_db_path: data/vectors
+  vector_db_type: faiss

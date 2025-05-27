@@ -1,88 +1,177 @@
-# RAG-CSD Default Configuration
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# General settings
-general:
-  random_seed: 42
-  log_level: INFO
-  device: "auto"  # auto, cpu, cuda, csd
-  cache_dir: ".cache"
+# C extensions
+*.so
 
-# Data processing
-data:
-  chunk_size: 512
-  chunk_overlap: 128
-  min_chunk_size: 128
-  max_chunks_per_doc: 10
-  remove_stopwords: false
-  lowercase: true
-  normalize_unicode: true
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Embedding settings
-embedding:
-  model: "sentence-transformers/all-MiniLM-L6-v2"  # Small model suitable for CSD
-  dimension: 384
-  batch_size: 32
-  normalize: true
-  pooling_strategy: "mean"  # mean, max, cls
-  use_amp: false  # Automatic mixed precision
-  quantization: null  # null, int8, fp16
+# PyInstaller
+*.manifest
+*.spec
 
-# Retrieval settings
-retrieval:
-  vector_db_type: "faiss"  # faiss, milvus, pinecone
-  vector_db_path: "data/vectors"
-  similarity_metric: "cosine"  # cosine, dot, euclidean
-  top_k: 5
-  reranking: false
-  min_similarity_score: 0.7
-  use_metadata_filtering: false
-  
-# Augmentation settings
-augmentation:
-  strategy: "concatenate"  # concatenate, template, weighted
-  max_tokens_per_chunk: 256
-  include_metadata: true
-  template: "Query: {query}\n\nContext: {context}"
-  separator: "\n\n"
-  deduplicate: true
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Computational Storage Device (CSD) settings
-csd:
-  enabled: true
-  simulator: true  # Use simulator or real CSD
-  device_path: "/dev/csd0"  # Path to CSD device (if not simulating)
-  latency: 5  # Simulated latency in ms
-  bandwidth: 2000  # MB/s
-  memory: 4  # GB
-  parallel_operations: 8
-  offload_embedding: true
-  offload_search: true
-  
-# Performance settings
-performance:
-  use_threads: true
-  num_threads: 8
-  prefetch_size: 2
-  profiling: false
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
 
-# Evaluation
-evaluation:
-  metrics:
-    - precision@k
-    - recall@k
-    - ndcg@k
-    - latency
-    - throughput
-  k_values: [1, 3, 5, 10]
-  test_queries_path: "data/test_queries.json"
-  ground_truth_path: "data/ground_truth.json"
-  
-# API settings (if exposing as a service)
-api:
-  enabled: false
-  host: "0.0.0.0"
-  port: 8000
-  debug: false
-  workers: 4
-  timeout: 30
-  cors_origins: ["*"]
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Model cache
+.cache/
+*.bin
+*.pt
+*.pth
+*.onnx
+
+# Data files (optional - uncomment if you don't want to track large data files)
+# *.npy
+# *.npz
+# *.h5
+# *.hdf5
+
+# Log files
+logs/
+*.log
+
+# Checkpoint files
+checkpoints/
+*.ckpt
+
+# Custom
+.scratch/
+experiments/

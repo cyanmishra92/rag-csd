@@ -16,6 +16,8 @@ data:
   remove_stopwords: false
   lowercase: true
   normalize_unicode: true
+  min_token_length: 2
+  max_token_length: 50
   
   # PDF specific settings
   pdf:
@@ -33,6 +35,12 @@ embedding:
   pooling_strategy: "mean"  # mean, max, cls
   use_amp: false  # Automatic mixed precision
   quantization: null  # null, int8, fp16
+  
+  # Embedding cache settings
+  cache:
+    enabled: true
+    max_size: 1000
+    ttl: 3600  # Time-to-live in seconds (1 hour)
   
   # Model options by size
   models:
@@ -58,6 +66,12 @@ retrieval:
   reranking: false
   min_similarity_score: 0.7
   use_metadata_filtering: false
+  
+  # FAISS index settings
+  index_type: "auto"  # auto, flat, ivf, hnsw
+  hnsw_M: 16  # Number of connections for HNSW
+  hnsw_efConstruction: 200  # Construction parameter for HNSW
+  hnsw_efSearch: 64  # Search parameter for HNSW
   
   # Predefined retrieval configurations
   presets:

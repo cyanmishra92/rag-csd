@@ -1,0 +1,17 @@
+Document about Vector Databases
+
+
+        The core functionality of vector databases is approximate nearest neighbor (ANN) search, which
+        finds the most similar vectors to a query vector based on distance metrics like cosine similarity,
+        Euclidean distance, or dot product. Unlike traditional databases that excel at exact matches,
+        vector databases optimize for similarity-based retrieval, trading off some accuracy for significant
+        performance improvements.
+        
+
+
+        Common indexing techniques in vector databases include tree-based methods (KD-trees, VP-trees),
+        graph-based approaches (HNSW, NSG), and quantization methods (PQ, OPQ). These approaches create
+        data structures that enable efficient navigation of the vector space to find nearest neighbors
+        without exhaustive comparison. Popular vector database systems include FAISS (Facebook AI Similarity Search),
+        Milvus, Pinecone, Weaviate, and Qdrant.
+        

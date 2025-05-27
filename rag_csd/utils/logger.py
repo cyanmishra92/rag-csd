@@ -83,3 +83,74 @@ def get_logger(name: str) -> logging.Logger:
         Logger instance.
     """
     return logging.getLogger(name)
+
+
+class PerformanceLogger:
+    """Logger for tracking performance metrics."""
+    
+    def __init__(self, name: str = "performance"):
+        self.logger = get_logger(name)
+        self.metrics = {}
+    
+    def log_timing(self, operation: str, duration: float, context: str = "") -> None:
+        """
+        Log timing information for an operation.
+        
+        Args:
+            operation: Name of the operation.
+            duration: Duration in seconds.
+            context: Additional context information.
+        """
+        context_str = f" ({context})" if context else ""
+        self.logger.info(f"TIMING: {operation}{context_str}: {duration:.3f}s")
+        
+        # Store metric
+        if operation not in self.metrics:
+            self.metrics[operation] = []
+        self.metrics[operation].append(duration)
+    
+    def log_throughput(self, operation: str, count: int, duration: float, unit: str = "items") -> None:
+        """
+        Log throughput information.
+        
+        Args:
+            operation: Name of the operation.
+            count: Number of items processed.
+            duration: Duration in seconds.
+            unit: Unit name for the items.
+        """
+        throughput = count / duration if duration > 0 else 0
+        self.logger.info(f"THROUGHPUT: {operation}: {throughput:.1f} {unit}/s "
+                        f"({count} {unit} in {duration:.3f}s)")
+    
+    def log_memory_usage(self, operation: str, memory_mb: float) -> None:
+        """
+        Log memory usage information.
+        
+        Args:
+            operation: Name of the operation.
+            memory_mb: Memory usage in MB.
+        """
+        self.logger.info(f"MEMORY: {operation}: {memory_mb:.1f} MB")
+    
+    def get_avg_timing(self, operation: str) -> float:
+        """
+        Get average timing for an operation.
+        
+        Args:
+            operation: Name of the operation.
+            
+        Returns:
+            Average timing in seconds, or 0 if no data.
+        """
+        if operation not in self.metrics or not self.metrics[operation]:
+            return 0.0
+        return sum(self.metrics[operation]) / len(self.metrics[operation])
+    
+    def clear_metrics(self) -> None:
+        """Clear all stored metrics."""
+        self.metrics.clear()
+
+
+# Global performance logger instance
+performance_logger = PerformanceLogger()

@@ -12,6 +12,9 @@ import torch
 from sentence_transformers import SentenceTransformer
 
 from rag_csd.utils.logger import get_logger
+from rag_csd.utils.model_cache import model_cache
+from rag_csd.utils.embedding_cache import get_embedding_cache
+from rag_csd.utils.text_processor import get_text_processor
 
 logger = get_logger(__name__)
 
@@ -37,6 +40,23 @@ class Encoder:
         self.use_amp = self.config.get("embedding", {}).get("use_amp", False)
         self.csd_enabled = self.config.get("csd", {}).get("enabled", False)
         self.csd_offload_embedding = self.config.get("csd", {}).get("offload_embedding", True)
+        
+        # Initialize embedding cache
+        cache_config = self.config.get("embedding", {}).get("cache", {})
+        self.use_cache = cache_config.get("enabled", True)
+        if self.use_cache:
+            cache_size = cache_config.get("max_size", 1000)
+            cache_ttl = cache_config.get("ttl", 3600)  # 1 hour default
+            self.embedding_cache = get_embedding_cache(
+                max_size=cache_size,
+                ttl=cache_ttl
+            )
+            logger.info(f"Embedding cache enabled: max_size={cache_size}, ttl={cache_ttl}")
+        else:
+            self.embedding_cache = None
+        
+        # Initialize text processor
+        self.text_processor = get_text_processor(self.config)
         
         # If CSD is enabled and offloading is enabled for embedding,
         # we'll simulate the CSD behavior
@@ -65,15 +85,10 @@ class Encoder:
         return device
     
     def _init_model(self) -> None:
-        """Initialize the encoding model."""
+        """Initialize the encoding model using the model cache."""
         try:
-            self.model = SentenceTransformer(self.model_name)
-            
-            if self.device == "cuda" and torch.cuda.is_available():
-                self.model = self.model.to("cuda")
-                logger.info(f"Encoder model loaded on GPU: {torch.cuda.get_device_name(0)}")
-            else:
-                logger.info("Encoder model loaded on CPU")
+            # Use model cache to get or load the model
+            self.model = model_cache.get_model(self.model_name, self.device)
             
             # Set the dimension from the model
             self.dimension = self.model.get_sentence_embedding_dimension()
@@ -94,8 +109,8 @@ class Encoder:
         # Optionally load the model for simulation purposes
         if self.config.get("csd", {}).get("simulator", True):
             try:
-                # Load the model but don't use it for actual encoding in CSD mode
-                self.model = SentenceTransformer(self.model_name)
+                # Use model cache for CSD simulation too
+                self.model = model_cache.get_model(self.model_name, "cpu")  # Use CPU for simulation
                 logger.info(f"Model loaded for CSD simulation: {self.model_name}")
             except Exception as e:
                 logger.warning(f"Could not load model for CSD simulation: {e}")
@@ -116,8 +131,8 @@ class Encoder:
             tokens = self.model.tokenize([text])[0]
             return tokens
         else:
-            # Fallback to simple whitespace tokenization
-            return text.split()
+            # Use optimized text processor
+            return self.text_processor.tokenize(text)
     
     def encode(self, query: Union[str, List[str]]) -> np.ndarray:
         """
@@ -134,24 +149,107 @@ class Encoder:
         # Handle single query or list of queries
         if isinstance(query, str):
             queries = [query]
+            single_query = True
         else:
             queries = query
+            single_query = False
         
-        if self.device == "csd":
-            # Simulate CSD encoding
-            embeddings = self._encode_on_csd(queries)
+        # Preprocess queries using the text processor
+        queries = [self.text_processor.preprocess_query(q) for q in queries]
+        
+        # Try to get embeddings from cache first
+        cached_embeddings = []
+        uncached_queries = []
+        uncached_indices = []
+        
+        if self.use_cache and self.embedding_cache:
+            for i, q in enumerate(queries):
+                cached_embedding = self.embedding_cache.get(q)
+                if cached_embedding is not None:
+                    cached_embeddings.append((i, cached_embedding))
+                else:
+                    uncached_queries.append(q)
+                    uncached_indices.append(i)
         else:
-            # Regular encoding using the model
-            embeddings = self._encode_with_model(queries)
+            uncached_queries = queries
+            uncached_indices = list(range(len(queries)))
+        
+        # Encode uncached queries
+        if uncached_queries:
+            if self.device == "csd":
+                # Simulate CSD encoding
+                new_embeddings = self._encode_on_csd(uncached_queries)
+            else:
+                # Regular encoding using the model
+                new_embeddings = self._encode_with_model(uncached_queries)
+            
+            # Cache the new embeddings
+            if self.use_cache and self.embedding_cache:
+                for q, embedding in zip(uncached_queries, new_embeddings):
+                    self.embedding_cache.put(q, embedding)
+        else:
+            new_embeddings = np.array([])
+        
+        # Combine cached and new embeddings in the correct order
+        if cached_embeddings and len(uncached_queries) > 0:
+            all_embeddings = [None] * len(queries)
+            
+            # Place cached embeddings
+            for idx, embedding in cached_embeddings:
+                all_embeddings[idx] = embedding
+            
+            # Place new embeddings
+            for i, idx in enumerate(uncached_indices):
+                all_embeddings[idx] = new_embeddings[i]
+            
+            embeddings = np.array(all_embeddings)
+        elif cached_embeddings:
+            # All from cache
+            embeddings = np.array([emb for _, emb in cached_embeddings])
+        else:
+            # All newly computed
+            embeddings = new_embeddings
         
         elapsed = (time.time() - start_time) * 1000  # convert to ms
-        logger.debug(f"Encoding completed in {elapsed:.2f}ms")
+        cache_hits = len(cached_embeddings)
+        cache_misses = len(uncached_queries)
+        logger.debug(f"Encoding {len(queries)} queries completed in {elapsed:.2f}ms "
+                    f"(cache hits: {cache_hits}, misses: {cache_misses})")
         
         # Return single embedding for single query
-        if isinstance(query, str):
+        if single_query:
             return embeddings[0]
         
         return embeddings
+    
+    def encode_batch(self, queries: List[str], batch_size: Optional[int] = None) -> np.ndarray:
+        """
+        Encode multiple queries in optimized batches.
+        
+        Args:
+            queries: List of query texts to encode.
+            batch_size: Batch size for encoding. If None, uses the configured batch size.
+            
+        Returns:
+            Array of embeddings with shape (len(queries), embedding_dim).
+        """
+        if not queries:
+            return np.array([])
+        
+        batch_size = batch_size or self.batch_size
+        
+        # If batch size is larger than queries, encode all at once
+        if len(queries) <= batch_size:
+            return self.encode(queries)
+        
+        # Process in batches
+        all_embeddings = []
+        for i in range(0, len(queries), batch_size):
+            batch = queries[i:i + batch_size]
+            batch_embeddings = self.encode(batch)
+            all_embeddings.append(batch_embeddings)
+        
+        return np.vstack(all_embeddings)
     
     def _encode_with_model(self, queries: List[str]) -> np.ndarray:
         """

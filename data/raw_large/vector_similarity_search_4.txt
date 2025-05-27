@@ -1,0 +1,17 @@
+Document about Vector Similarity Search
+
+
+        Vector similarity search is the computational process of finding vectors in a dataset that
+        are most similar to a query vector according to some distance metric. This operation forms
+        the foundation of many modern AI applications, including semantic search, recommendation
+        systems, image retrieval, and anomaly detection. The goal is to efficiently identify the
+        k-nearest neighbors (kNN) to the query vector in a potentially very large vector space.
+        
+
+
+        Common distance metrics used in vector similarity search include cosine similarity (measuring
+        the angle between vectors, ideal for text embeddings), Euclidean distance (measuring the
+        straight-line distance, suitable for spatial data), dot product (measuring directional similarity),
+        and Manhattan distance (measuring grid-like distance). The choice of metric depends on the nature
+        of the data and the specific requirements of the application.
+        

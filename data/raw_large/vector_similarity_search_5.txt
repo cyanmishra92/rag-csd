@@ -1,0 +1,18 @@
+Document about Vector Similarity Search
+
+
+        Scaling vector similarity search to large datasets presents significant challenges. Exact
+        nearest neighbor search becomes prohibitively expensive as dimensions and dataset size increase,
+        a phenomenon known as the "curse of dimensionality." To address this, approximate nearest
+        neighbor (ANN) algorithms sacrifice some accuracy for dramatic performance improvements.
+        Popular ANN techniques include locality-sensitive hashing (LSH), hierarchical navigable small
+        world graphs (HNSW), product quantization (PQ), and inverted file with product quantization (IVF+PQ).
+        
+
+
+        Vector similarity search is the computational process of finding vectors in a dataset that
+        are most similar to a query vector according to some distance metric. This operation forms
+        the foundation of many modern AI applications, including semantic search, recommendation
+        systems, image retrieval, and anomaly detection. The goal is to efficiently identify the
+        k-nearest neighbors (kNN) to the query vector in a potentially very large vector space.
+        

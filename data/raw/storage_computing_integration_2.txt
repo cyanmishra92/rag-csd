@@ -1,0 +1,19 @@
+Document about Storage Computing Integration
+
+
+        Storage-computing integration offers significant benefits for data-intensive applications.
+        By performing computations closer to where data resides, systems can achieve lower latency,
+        higher throughput, and improved energy efficiency. This paradigm shift is particularly
+        relevant for big data analytics, AI/ML workloads, database operations, and edge computing
+        scenarios where processing large volumes of data with limited resources is essential.
+        
+
+
+        Implementation approaches for storage-computing integration include specialized hardware
+        (CSDs, smart SSDs, FPGAs with embedded storage), software frameworks that optimize data
+        locality, and hybrid architectures that selectively offload operations. Challenges in this
+        domain include programming model complexity, cost-effectiveness, standardization, and
+        compatibility with existing software ecosystems. Despite these challenges, the trend toward
+        tighter storage-computing integration continues to grow as data volumes increase and
+        traditional architectures reach their scaling limits.
+        

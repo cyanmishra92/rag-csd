@@ -1,0 +1,15 @@
+Document about Computational Storage
+
+
+        Computational Storage is a new computing paradigm that moves processing closer to where data is stored.
+        It helps reduce data movement and improves performance for data-intensive applications.
+        Computational Storage Devices (CSDs) integrate computing capabilities directly with storage, enabling
+        operations like filtering, aggregation, and transformation to be performed within the storage device itself.
+        
+
+
+        The architecture of a typical CSD includes storage media (like NAND flash), an embedded processor
+        (ARM cores, FPGA, or ASIC), and firmware that exposes computational capabilities. CSDs can be
+        implemented as SSDs with added compute, FPGAs with storage, or custom ASICs. These devices typically
+        connect via NVMe or PCIe interfaces and may support standards like NVMe Computational Storage.
+        

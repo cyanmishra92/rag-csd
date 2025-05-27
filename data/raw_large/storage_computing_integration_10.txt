@@ -1,0 +1,18 @@
+Document about Storage Computing Integration
+
+
+        Storage-computing integration offers significant benefits for data-intensive applications.
+        By performing computations closer to where data resides, systems can achieve lower latency,
+        higher throughput, and improved energy efficiency. This paradigm shift is particularly
+        relevant for big data analytics, AI/ML workloads, database operations, and edge computing
+        scenarios where processing large volumes of data with limited resources is essential.
+        
+
+
+        The integration of storage and computing represents a fundamental shift in system architecture,
+        moving away from the traditional von Neumann model where data shuttles between separate storage
+        and processing units. This integration takes various forms, including computational storage,
+        near-data processing, in-memory computing, and processing-in-memory. These approaches share the
+        common goal of reducing data movement, which has become a major bottleneck in terms of latency,
+        energy consumption, and overall system performance.
+        

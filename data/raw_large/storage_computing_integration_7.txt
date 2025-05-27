@@ -1,0 +1,20 @@
+Document about Storage Computing Integration
+
+
+        Implementation approaches for storage-computing integration include specialized hardware
+        (CSDs, smart SSDs, FPGAs with embedded storage), software frameworks that optimize data
+        locality, and hybrid architectures that selectively offload operations. Challenges in this
+        domain include programming model complexity, cost-effectiveness, standardization, and
+        compatibility with existing software ecosystems. Despite these challenges, the trend toward
+        tighter storage-computing integration continues to grow as data volumes increase and
+        traditional architectures reach their scaling limits.
+        
+
+
+        The integration of storage and computing represents a fundamental shift in system architecture,
+        moving away from the traditional von Neumann model where data shuttles between separate storage
+        and processing units. This integration takes various forms, including computational storage,
+        near-data processing, in-memory computing, and processing-in-memory. These approaches share the
+        common goal of reducing data movement, which has become a major bottleneck in terms of latency,
+        energy consumption, and overall system performance.
+        

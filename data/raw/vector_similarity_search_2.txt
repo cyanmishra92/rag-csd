@@ -1,0 +1,18 @@
+Document about Vector Similarity Search
+
+
+        Common distance metrics used in vector similarity search include cosine similarity (measuring
+        the angle between vectors, ideal for text embeddings), Euclidean distance (measuring the
+        straight-line distance, suitable for spatial data), dot product (measuring directional similarity),
+        and Manhattan distance (measuring grid-like distance). The choice of metric depends on the nature
+        of the data and the specific requirements of the application.
+        
+
+
+        Scaling vector similarity search to large datasets presents significant challenges. Exact
+        nearest neighbor search becomes prohibitively expensive as dimensions and dataset size increase,
+        a phenomenon known as the "curse of dimensionality." To address this, approximate nearest
+        neighbor (ANN) algorithms sacrifice some accuracy for dramatic performance improvements.
+        Popular ANN techniques include locality-sensitive hashing (LSH), hierarchical navigable small
+        world graphs (HNSW), product quantization (PQ), and inverted file with product quantization (IVF+PQ).
+        

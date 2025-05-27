@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "text": "What is computational storage?",
+    "topic": "computational_storage"
+  },
+  {
+    "id": "q2",
+    "text": "How do vector databases work?",
+    "topic": "vector_databases"
+  },
+  {
+    "id": "q3",
+    "text": "Explain retrieval augmented generation.",
+    "topic": "retrieval_augmented_generation"
+  },
+  {
+    "id": "q4",
+    "text": "What are the benefits of integrating storage and computing?",
+    "topic": "storage_computing_integration"
+  },
+  {
+    "id": "q5",
+    "text": "How does vector similarity search work?",
+    "topic": "vector_similarity_search"
+  },
+  {
+    "id": "q6",
+    "text": "What are the advantages of computational storage devices?",
+    "topic": "computational_storage"
+  },
+  {
+    "id": "q7",
+    "text": "Compare different vector database indexing techniques.",
+    "topic": "vector_databases"
+  },
+  {
+    "id": "q8",
+    "text": "What is the architecture of a RAG system?",
+    "topic": "retrieval_augmented_generation"
+  },
+  {
+    "id": "q9",
+    "text": "What challenges exist in storage-computing integration?",
+    "topic": "storage_computing_integration"
+  },
+  {
+    "id": "q10",
+    "text": "Explain approximate nearest neighbor search algorithms.",
+    "topic": "vector_similarity_search"
+  }
+]

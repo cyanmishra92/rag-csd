@@ -21,6 +21,7 @@ from tqdm import tqdm
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from rag_csd.utils.logger import setup_logger
+from rag_csd.utils.text_processor import get_text_processor
 
 
 def load_config(config_path: str) -> Dict:
@@ -30,37 +31,7 @@ def load_config(config_path: str) -> Dict:
     return config
 
 
-def chunk_text(
-    text: str, chunk_size: int, chunk_overlap: int, min_chunk_size: int
-) -> List[str]:
-    """Split text into chunks with specified size and overlap."""
-    if len(text) <= chunk_size:
-        return [text]
-
-    chunks = []
-    start = 0
-    while start < len(text):
-        end = min(start + chunk_size, len(text))
-        # Try to find a sensible breaking point (newline or period)
-        if end < len(text):
-            # Look for a newline
-            newline_pos = text.rfind("\n", start, end)
-            if newline_pos > start + min_chunk_size:
-                end = newline_pos + 1
-            else:
-                # Look for a period followed by space
-                period_pos = text.rfind(". ", start, end)
-                if period_pos > start + min_chunk_size:
-                    end = period_pos + 2
-
-        chunk = text[start:end].strip()
-        if chunk:  # Only add non-empty chunks
-            chunks.append(chunk)
-        
-        # Move the start position for the next chunk, considering overlap
-        start = max(start + chunk_size - chunk_overlap, end - chunk_overlap)
-    
-    return chunks
+# Removed - now using optimized text processor
 
 
 def process_documents(
@@ -75,6 +46,9 @@ def process_documents(
     if not file_paths:
         raise ValueError(f"No {file_ext} files found in {input_dir}")
     
+    # Initialize text processor
+    text_processor = get_text_processor(config)
+    
     chunk_size = config["data"]["chunk_size"]
     chunk_overlap = config["data"]["chunk_overlap"]
     min_chunk_size = config["data"]["min_chunk_size"]
@@ -88,8 +62,17 @@ def process_documents(
             with open(file_path, "r", encoding="utf-8") as f:
                 text = f.read()
             
-            # Generate chunks
-            chunks = chunk_text(text, chunk_size, chunk_overlap, min_chunk_size)
+            # Preprocess the document
+            preprocessed_text = text_processor.preprocess_document(text)
+            
+            # Generate chunks using optimized chunker
+            chunks = text_processor.chunk_text_optimized(
+                preprocessed_text, 
+                chunk_size, 
+                chunk_overlap, 
+                min_chunk_size,
+                prefer_sentence_boundaries=True
+            )
             
             # Limit the number of chunks per document if needed
             if max_chunks_per_doc > 0 and len(chunks) > max_chunks_per_doc:
@@ -109,10 +92,14 @@ def process_documents(
                     "file_path": file_path,
                     "position": i,
                     "total_chunks": len(chunks),
+                    "char_length": len(chunk),
+                    "token_count": len(text_processor.tokenize(chunk)),
                 })
         
         except Exception as e:
             logging.error(f"Error processing {file_path}: {e}")
+    
+    logging.info(f"Text processor stats: {text_processor.get_stats()}")
     
     return all_chunks, all_metadata
 

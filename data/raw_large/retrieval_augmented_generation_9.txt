@@ -1,0 +1,18 @@
+Document about Retrieval Augmented Generation
+
+
+        RAG offers several advantages over pure generative models, including improved factuality,
+        reduced hallucination, greater transparency (as sources can be cited), and the ability to
+        access up-to-date information without retraining. RAG systems are particularly valuable for
+        question answering, chatbots, summarization, and any application where factual accuracy and
+        recency of information are important. They can be customized by changing the knowledge base
+        to adapt to different domains or use cases.
+        
+
+
+        The typical RAG architecture consists of three main components: (1) an embedding model that
+        converts queries and documents into vector representations, (2) a retrieval system that finds
+        the most relevant documents using vector similarity, and (3) a generation model that synthesizes
+        the original query with the retrieved information to produce a response. This pipeline allows
+        the system to ground its generations in specific, relevant facts from a trustworthy knowledge base.
+        

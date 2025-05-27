@@ -1,0 +1,16 @@
+Document about Computational Storage
+
+
+        The architecture of a typical CSD includes storage media (like NAND flash), an embedded processor
+        (ARM cores, FPGA, or ASIC), and firmware that exposes computational capabilities. CSDs can be
+        implemented as SSDs with added compute, FPGAs with storage, or custom ASICs. These devices typically
+        connect via NVMe or PCIe interfaces and may support standards like NVMe Computational Storage.
+        
+
+
+        Key benefits of Computational Storage include reduced latency, decreased power consumption, improved
+        application performance, and better resource utilization. By minimizing data movement between storage
+        and the CPU, computational storage reduces the bottlenecks in traditional computing architectures.
+        This approach is particularly valuable for applications dealing with large datasets, such as databases,
+        analytics, and machine learning.
+        

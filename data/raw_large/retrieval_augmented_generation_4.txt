@@ -1,0 +1,19 @@
+Document about Retrieval Augmented Generation
+
+
+        Retrieval-Augmented Generation (RAG) is a hybrid AI framework that combines the strengths of
+        retrieval-based systems with generative models. In a RAG system, a retrieval component first
+        fetches relevant information from a knowledge base, and then a generative model uses this
+        retrieved context to produce more accurate, factual, and contextually appropriate responses.
+        This approach enhances the capabilities of large language models by giving them access to
+        external knowledge beyond their training data.
+        
+
+
+        RAG offers several advantages over pure generative models, including improved factuality,
+        reduced hallucination, greater transparency (as sources can be cited), and the ability to
+        access up-to-date information without retraining. RAG systems are particularly valuable for
+        question answering, chatbots, summarization, and any application where factual accuracy and
+        recency of information are important. They can be customized by changing the knowledge base
+        to adapt to different domains or use cases.
+        
